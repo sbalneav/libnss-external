@@ -1,0 +1,56 @@
+.TH "NSS_EXTERNAL" "5" "2016/05/05"
+.nh
+.ad l
+.SH "NAME"
+nss_external \- NSS module which executes external programs to provide NSS
+services\&.
+.SH "DESCRIPTION"
+.PP
+nss_external is a library which allows a system to obtain name service
+information using an external program\&.  It does not provide any NSS services
+in and of itself, but rather, is a shim to allow user-written standalone
+programs to provide NSS services\&.
+.PP
+Three programs are needed: \fIpasswd\fR, \fIgroup\fR, and \fIshadow\fR, which
+provide passwd, group, and shadow information respectively\&. Each program
+should accept either 0 or 1 parameter\&.
+.PP
+If no parameters are provided, the program should provide all the entries
+that it knows about.  The format of the output should be in lines of text,
+terminated with a newline, in the format of the respective file they provide;
+i.e. passwd(5), group(5), or shadow(5) formatted entries\&.  If the program
+neither knows about any entries, or has an error, it should simply output
+nothing\&.  The exit code of the program is not checked\&.
+.PP
+If one parameter is provided, it might be \fIeither\fR a numeric id (for group
+and passwd) or a string (for group, passwd, and shadow), representing the
+individual entry to be provided\&.  If the entry does not exist, or there is
+an error, do not provide any output\&. Again, the exit code of the program is
+not checked\&.
+.PP
+.SH "ENVIRONMENT VARIABLES"
+.PP
+NSS_EXTERNAL_DISABLE
+.RS 4
+This variable, if set to anything, is used by the library as a
+way to temporarily disable the module without removing it from
+\fBnsswitch.conf\fR\&.  This can be useful when developing commands\&.
+It is also used internally by the module to ensure calling an external command
+doesn't result in generating an NSS query, and therefore a recursive call to
+\fInss_external\fR\&.
+.RE
+.PP
+.SH "DIRECTORIES"
+.PP
+\fB/etc/nss-external\fR
+.RS 4
+This directory contains either the programs used by the \fBnss_external\fR
+library, or better still, symbolic links to some other place in the filesystem
+where the programs are stored\&.
+.RE
+.SH "SEE ALSO"
+.PP
+\fBnsswitch.conf\fR(5),
+.SH "AUTHOR"
+.PP
+nss_external was written by Scott Balneaves <sbalneav\&@ltsp\&.org\&>\&.
