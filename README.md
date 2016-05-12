@@ -14,10 +14,12 @@ Building:
 
 Untar the nss_external-1.0.tar.gz file.
 
+```
 cd nss_external-1.0
 ./configure --prefix=/usr
 make
 sudo make install
+```
 
 Installation:
 -------------
@@ -25,11 +27,11 @@ Installation:
 The building phase should put the library in /usr/lib.  To use nss_external,
 edit your /etc/nsswitch.conf file as follows:
 
-....
+```
 passwd:         compat external
 group:          compat external
 shadow:         compat external
-....
+```
 
 Create a directory /etc/nss-external.  In this directory, either place the 3
 programs (named "passwd", "group", and "shadow") for the three databases, or
@@ -60,14 +62,18 @@ ssh -S $NSSSOCKET $NSSSERVER getent $DB $@
 
 Install the symbolic links (as root) in /etc/nss-external:
 
+```
 ln -s /usr/share/nss-external-ssh/sshnss /etc/nss-external/passwd
 ln -s /usr/share/nss-external-ssh/sshnss /etc/nss-external/group
 ln -s /usr/share/nss-external-ssh/sshnss /etc/nss-external/shadow
+```
 
 Make sure you, as a user, have esablished a remote ssh master socket, like
 so:
 
+```
 ssh -M -S $HOME/.nsssocket my.hostname
+```
 
 if everything's working alright, you should be able to execute a:
 
