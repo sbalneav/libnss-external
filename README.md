@@ -46,7 +46,7 @@ their home directory.
 Place the following short shell script in /usr/share/nss-external-ssh, and call
 it "sshnss":
 
-------------------------------------------------------------------------------
+```
 #!/bin/sh
 
 NSSSOCKET=$HOME/.nsssocket
@@ -56,7 +56,7 @@ DB=$(basename $0)
 test -S $NSSSOCKET || exit 0
 
 ssh -S $NSSSOCKET $NSSSERVER getent $DB $@
-------------------------------------------------------------------------------
+```
 
 Install the symbolic links (as root) in /etc/nss-external:
 
